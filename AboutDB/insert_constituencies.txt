@@ -1,0 +1,5 @@
+db.constituencies.insertOne({
+  constituency_id: "C001",
+  name: "North Mangalore",
+  password: "constituency123"
+})

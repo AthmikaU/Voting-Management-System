@@ -6,6 +6,7 @@ import AdminPage from "./pages/AdminPage";
 import VoterDashboard from "./pages/VoterDashboard";
 import PartyPage from "./pages/PartyPage";
 import ConstituencyAdmin from "./pages/ConstituencyAdmin";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   return (
@@ -13,8 +14,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/admin" element={<AdminPage />} />
+
         <Route path="/voter_dashboard" element={<VoterDashboard />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+
         <Route path="/party" element={<PartyPage />} />
+        
         <Route path="/constituency_admin" element={<ConstituencyAdmin />} />
       </Routes>
     </Router>

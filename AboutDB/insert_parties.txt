@@ -1,0 +1,5 @@
+db.parties.insertOne({
+  party_id: "P001",
+  name: "Demo Front",
+  password: "party123"
+})

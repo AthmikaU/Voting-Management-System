@@ -3,8 +3,6 @@ db.voters.insertOne({
   voter_id: "V123",
   first_name: "John",
   last_name: "Doe",
-  address: "123 Main St",
-  phone: "1234567890",
   password: "pass123"
 })
 
