@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './login.css';
+import './styles/login.css';
 
 function Login() {
   const [role, setRole] = useState("voter");
@@ -13,9 +13,17 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/login", { ...formData, role });
-      window.location.href = res.data.redirect;
+      
+      if (res.data.success) {
+        if (role === "voter" && res.data.voter) {
+          // Save voter info in localStorage
+          localStorage.setItem("voterInfo", JSON.stringify(res.data.voter));
+        }
+        // Redirect
+        window.location.href = res.data.redirect;
+      }
     } catch (err) {
-      setError(err.response.data.error);
+      setError(err.response?.data?.error || "Login failed");
     }
   };
 
