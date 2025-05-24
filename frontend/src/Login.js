@@ -13,13 +13,11 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/login", { ...formData, role });
-      
+
       if (res.data.success) {
         if (role === "voter" && res.data.voter) {
-          // Save voter info in localStorage
           localStorage.setItem("voterInfo", JSON.stringify(res.data.voter));
         }
-        // Redirect
         window.location.href = res.data.redirect;
       }
     } catch (err) {
@@ -64,20 +62,22 @@ function Login() {
           </form>
         </div>
 
-
-        {/* Admin Login Modal */}
-        <div className="admin-btn text-center mt-4">
-          <button onClick={() => setRole("admin")} className="btn">Admin Login</button>
+        {/* Admin Login and View Results */}
+        <div className="button-group">
+          <div className="admin-btn">
+            <button onClick={() => setRole("admin")} className="btn">Admin Login</button>
+          </div>
+          <div className="view-results-btn">
+            <button onClick={() => window.location.href = "/results"} className="btn">View Results</button>
+          </div>
         </div>
+
         {role === "admin" && (
           <form onSubmit={handleSubmit} className="mt-3">
             <input name="password" type="password" placeholder="Admin Password" required onChange={handleChange} />
             <button type="submit" className="btn btn-primary w-100 mt-2">Login</button>
           </form>
         )}
-        <div className="text-center mt-3 view-results-btn ">
-          <a href="/results" className="btn">View Results</a>
-        </div>
       </div>
     </div>
   );
