@@ -7,6 +7,7 @@ import VoterDashboard from "./pages/VoterDashboard";
 import PartyPage from "./pages/PartyPage";
 import ConstituencyAdmin from "./pages/ConstituencyAdmin";
 import EditProfile from "./pages/EditProfile";
+import BallotPaper from "./pages/BallotPaper";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
 
         <Route path="/voter_dashboard" element={<VoterDashboard />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/vote" element={<BallotPaper/>} />
 
         <Route path="/party" element={<PartyPage />} />
         

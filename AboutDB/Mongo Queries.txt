@@ -1,0 +1,48 @@
+Mongo Queries:
+-------------------
+
+use voting_system
+
+db.voters.insertMany([
+  {
+    voter_id: "V001",
+    first_name: "John",
+    last_name: "Doe",
+    password: "pass001",
+    address: "mangalore",
+    phone: "9876543210",
+    constituency: "C001"
+  },
+  {
+    voter_id: "V002",
+    first_name: "Alice",
+    last_name: "Deol",
+    password: "pass002",
+    address: "adyar",
+    phone: "1234567890",
+    constituency: "C001"
+  }
+])
+
+
+db.parties.insertOne({
+  party_id: "P001",
+  name: "Democratic Party",
+  password: "party001"
+})
+
+
+db.candidates.insertOne({
+  candidate_id: "CD001",
+  name: "Alice Johnson",
+  constituency: "C001",  
+  party_id: "P001"       
+})
+
+db.constituencies.insertOne({
+  constituency_id: "C001",
+  name: "Mangalore Central",
+  password: "const001"
+})
+
+

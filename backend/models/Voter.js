@@ -5,9 +5,9 @@ const voterSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   password: { type: String, required: true },
-  address: { type: String, default: "" }, 
-  phone: { type: String, default: "" },    
-  constituency: { type: mongoose.Schema.Types.ObjectId, ref: 'Constituency' },
+  address: { type: String, default: "" },
+  phone: { type: String, default: "" },
+  constituency: { type: String, required: true }
 });
 
 const Voter = mongoose.model('Voter', voterSchema);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../styles/voter_dashboard.css';
 
 function VoterDashboard() {
   const [voter, setVoter] = useState(null);
@@ -42,7 +43,7 @@ function VoterDashboard() {
           alt="Profile Icon"
           style={{ width: 150, height: 150 }}
         />
-        <div className="ml-4">
+        <div className="ms-5">
           <p><strong>Voter ID:</strong> {voter.voter_id}</p>
           <p><strong>Name:</strong> {voter.first_name} {voter.last_name}</p>
           <p>
@@ -61,6 +62,7 @@ function VoterDashboard() {
           </button>
         </div>
       </div>
+
 
       <div className="mt-4">
         <button
