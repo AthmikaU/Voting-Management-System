@@ -1,10 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const CandidateSchema = new mongoose.Schema({
-  candidate_id: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  constituency: { type: String, required: true }, 
-  party_id: { type: String, required: true } // Connects to party_id of Party
+const candidateSchema = new mongoose.Schema({
+  candidate_id: String,
+  name: String,
+  constituency: String,
+  party_id: String,
+  votes: {
+    type: Number,
+    default: 0
+  }
 });
 
-module.exports = mongoose.model("Candidate", CandidateSchema);
+module.exports = mongoose.model("Candidate", candidateSchema);

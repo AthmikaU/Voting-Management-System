@@ -1,26 +1,113 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { Button, Card, Container, Row, Col, Alert } from "react-bootstrap";
 
-function BallotPaper() {
-    const [voter, setVote] = useState(null);
-    // const navigate = useNavigate(); 
+const BallotPaper = () => {
+  const [candidates, setCandidates] = useState([]);
+  const [voter, setVoter] = useState(null);
+  const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        const stored = localStorage.getItem("voterInfo");
-        if (stored) {
-        const { voter_id } = JSON.parse(stored);
+  useEffect(() => {
+    const stored = localStorage.getItem("voterInfo");
+    if (stored) {
+      const { voter_id } = JSON.parse(stored);
 
-        axios.get(`http://localhost:5000/vote/${voter_id}`)
-            .then(res => setVote(res.data))
-            .catch(() => setVote(null));
+      const fetchBallotData = async () => {
+        try {
+          const res = await axios.get(`http://localhost:5000/voter/ballot/${voter_id}`);
+          setCandidates(res.data.candidates);
+          setVoter(res.data.voter);
+        } catch (err) {
+          setMessage("Error fetching ballot data.");
+          console.error("Fetch Error:", err);
         }
-    }, []);
+      };
 
+      fetchBallotData();
+    }
+  }, []);
 
-    return(
-        <h1 className="text-center mt-4 text-success">Ballot Paper for Voter </h1>
-    );
-}
+  const handleVote = async (candidate_id) => {
+    if (!voter?.voter_id) {
+      setMessage("Voter ID missing. Cannot vote.");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:5000/voter/vote", {
+        voter_id: voter.voter_id,
+        candidate_id,
+      });
+      setMessage(res.data.message);
+      setVoter({
+        ...voter,
+        has_voted: true,
+        voted_candidate_id: candidate_id,
+      });
+    } catch (err) {
+      console.error("Vote error:", err);
+      setMessage(err.response?.data?.error || "Voting failed.");
+    }
+  };
+
+  return (
+    <Container className="mt-5">
+      <h2 className="text-center mb-4">Ballot Paper</h2>
+      {message && <Alert variant="info">{message}</Alert>}
+
+      <Row>
+        {candidates.map((candidate) => (
+          <Col md={4} key={candidate.candidate_id} className="mb-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>{candidate.name}</Card.Title>
+                <Card.Text>Party: {candidate.party_name}</Card.Text>
+                {voter?.has_voted ? (
+                  voter.voted_candidate_id === candidate.candidate_id ? (
+                    <Button variant="success" disabled>
+                      You voted for this candidate
+                    </Button>
+                  ) : (
+                    <Button variant="secondary" disabled>
+                      Vote
+                    </Button>
+                  )
+                ) : (
+                  <Button onClick={() => handleVote(candidate.candidate_id)}>
+                    Vote
+                  </Button>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+
+        {/* NOTA Option */}
+        <Col md={4} className="mb-4">
+          <Card bg="light">
+            <Card.Body>
+              <Card.Title>None of the Above (NOTA)</Card.Title>
+              {voter?.has_voted ? (
+                voter.voted_candidate_id === "NOTA" ? (
+                  <Button variant="success" disabled>
+                    You selected NOTA
+                  </Button>
+                ) : (
+                  <Button variant="secondary" disabled>
+                    Vote
+                  </Button>
+                )
+              ) : (
+                <Button variant="warning" onClick={() => handleVote("NOTA")}>
+                  Vote NOTA
+                </Button>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default BallotPaper;

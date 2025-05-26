@@ -1,13 +1,39 @@
-// src/pages/ConstituencyAdmin.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '../styles/constituency.css';
+import axios from "axios";
+import "../styles/constituency.css";
 
 function ConstituencyAdmin() {
   const navigate = useNavigate();
+  const [candidates, setCandidates] = useState([]);
+  const [constituencyId, setConstituencyId] = useState("");
+
+  // Function to fetch candidates by constituencyId
+  const fetchCandidates = (id) => {
+    axios
+      .get(`http://localhost:5000/candidates/${id}`)
+      .then((res) => {
+        setCandidates(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching candidates:", err);
+      });
+  };
+
+  useEffect(() => {
+    const constituencyInfo = JSON.parse(localStorage.getItem("constituencyInfo"));
+    if (!constituencyInfo) {
+      navigate("/");
+      return;
+    }
+
+    const id = constituencyInfo.constituency_id;
+    setConstituencyId(id);
+    fetchCandidates(id);
+  }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("constituencyInfo"); // store login info
+    localStorage.removeItem("constituencyInfo");
     navigate("/");
   };
 
@@ -30,8 +56,41 @@ function ConstituencyAdmin() {
         />
         <div className="ms-5">
           <p><strong>Role:</strong> Constituency Admin</p>
-          <p><strong>Privileges:</strong> Manage voter records, oversee election processes in the constituency, monitor candidate participation, etc.</p>
+          <p><strong>Privileges:</strong> Manage voter records, oversee election processes, monitor candidate participation, etc.</p>
         </div>
+      </div>
+
+      {/* Candidates Table */}
+      <div className="mt-5">
+        <h4>Candidates in {constituencyId}</h4>
+        <table className="table table-bordered table-striped mt-3">
+          <thead className="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Candidate ID</th>
+              <th>Candidate Name</th>
+              <th>Party Name</th>
+              <th>Votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {candidates.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center">No candidates found</td>
+              </tr>
+            ) : (
+              candidates.map((candidate, index) => (
+                <tr key={candidate.candidate_id}>
+                  <td>{index + 1}</td>
+                  <td>{candidate.candidate_id}</td>
+                  <td>{candidate.name}</td>
+                  <td>{candidate.party_name}</td>
+                  <td>{candidate.votes}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

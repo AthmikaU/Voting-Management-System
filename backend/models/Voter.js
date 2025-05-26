@@ -1,14 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const voterSchema = new mongoose.Schema({
+const VoterSchema = new mongoose.Schema({
   voter_id: { type: String, required: true, unique: true },
-  first_name: { type: String, required: true },
-  last_name: { type: String, required: true },
-  password: { type: String, required: true },
-  address: { type: String, default: "" },
-  phone: { type: String, default: "" },
-  constituency: { type: String, required: true }
+  first_name: String,
+  last_name: String,
+  password: String,
+  address: String,
+  phone: String,
+  constituency: String,
+  has_voted: { type: Boolean, default: false },
+  voted_candidate_id: { type: String, default: null },
 });
 
-const Voter = mongoose.model('Voter', voterSchema);
-module.exports = Voter;
+module.exports = mongoose.model("Voter", VoterSchema);

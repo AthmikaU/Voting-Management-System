@@ -13,16 +13,22 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       const res = await axios.post("http://localhost:5000/login", { ...formData, role });
 
       if (res.data.success) {
         if (role === "voter" && res.data.voter) {
           localStorage.setItem("voterInfo", JSON.stringify(res.data.voter));
-        }
-        if (role === "party" && res.data.party) {
+        } else if (role === "party" && res.data.party) {
           localStorage.setItem("partyInfo", JSON.stringify(res.data.party));
+        } else if (role === "constituency" && res.data.constituency) {
+          localStorage.setItem("constituencyInfo", JSON.stringify(res.data.constituency));
+        } else if (role === "admin" && res.data.admin) {
+          localStorage.setItem("adminInfo", JSON.stringify(res.data.admin));
         }
+
         window.location.href = res.data.redirect;
       }
     } catch (err) {
@@ -65,15 +71,19 @@ function Login() {
                 <input name="last_name" placeholder="Last Name" required onChange={handleChange} />
               </>
             )}
+
             {role === "party" && (
-              <>
-                <input name="party_id" placeholder="Party ID" required onChange={handleChange} />
-              </>
+              <input name="party_id" placeholder="Party ID" required onChange={handleChange} />
             )}
+
             {role === "constituency" && (
               <input name="constituency_id" placeholder="Constituency ID" required onChange={handleChange} />
             )}
-            {/* Admin password or shared password input */}
+
+            {role === "admin" && (
+              <p className="text-muted text-center mb-2">Enter Admin Password</p>
+            )}
+
             <input
               name="password"
               type="password"
@@ -81,23 +91,48 @@ function Login() {
               required
               onChange={handleChange}
             />
+
             <button type="submit" className="btn btn-primary w-100 mt-3">Login</button>
             {error && <div className="alert alert-danger mt-3">{error}</div>}
           </form>
         </div>
 
-        {/* Admin & View Results Buttons (Spacing Preserved) */}
-        <div className="button-group">
-          <div className="admin-btn">
-            <button onClick={() => {
-              setRole("admin");
-              setFormData({});
-              setError("");
-            }} className="btn">Admin Login</button>
-          </div>
-          <div className="view-results-btn">
-            <button onClick={() => window.location.href = "/results"} className="btn">View Results</button>
-          </div>
+        {/* Action Buttons */}
+        <div className="button-group mt-3">
+          {role !== "admin" ? (
+            <>
+              <div className="admin-btn">
+                <button
+                  onClick={() => {
+                    setRole("admin");
+                    setFormData({});
+                    setError("");
+                  }}
+                  className="btn"
+                >
+                  Admin Login
+                </button>
+              </div>
+              <div className="view-results-btn">
+                <button onClick={() => window.location.href = "/results"} className="btn">
+                  View Results
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="text-center">
+              <button
+                onClick={() => {
+                  setRole("voter");
+                  setFormData({});
+                  setError("");
+                }}
+                className="btn btn-secondary mt-2"
+              >
+                Back to User Login
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

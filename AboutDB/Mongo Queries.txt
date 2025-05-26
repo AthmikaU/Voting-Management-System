@@ -11,16 +11,20 @@ db.voters.insertMany([
     password: "pass001",
     address: "mangalore",
     phone: "9876543210",
-    constituency: "C001"
+    constituency: "C001",
+    has_voted: false,
+    voted_candidate_id: null
   },
   {
     voter_id: "V002",
     first_name: "Alice",
-    last_name: "Deol",
+    last_name: "Doel",
     password: "pass002",
     address: "adyar",
     phone: "1234567890",
-    constituency: "C001"
+    constituency: "C001",
+    has_voted: false,
+    voted_candidate_id: null
   }
 ])
 
@@ -39,6 +43,35 @@ db.candidates.insertOne({
   party_id: "P001"       
 })
 
+....OR....
+
+db.candidates.insertOne({
+  candidate_id: "CD001",
+  name: "Alice Johnson",
+  constituency: "C001",   
+  party_id: "P001",        
+  votes: 0                 
+});
+
+db.candidates.insertMany([
+  {
+    candidate_id: "CD001",
+    name: "Alice Johnson",
+    constituency: "C001",
+    party_id: "P001",
+    votes: 0
+  },
+  {
+    candidate_id: "CD002",
+    name: "Bob Smith",
+    constituency: "C001",
+    party_id: "P002",
+    votes: 0
+  }
+]);
+
+
+
 db.constituencies.insertOne({
   constituency_id: "C001",
   name: "Mangalore Central",
@@ -46,3 +79,33 @@ db.constituencies.insertOne({
 })
 
 
+
+
+=======================================================================
+ 1. QUERY: Show all candidates in a constituency with party names
+--------------------------------------------------
+db.candidates.aggregate([
+  { $match: { constituency: "C001" } },
+  {
+    $lookup: {
+      from: "parties",
+      localField: "party_id",
+      foreignField: "party_id",
+      as: "party_info"
+    }
+  },
+  {
+    $unwind: "$party_info"
+  },
+  {
+    $project: {
+      _id: 0,
+      candidate_id: 1,
+      name: 1,
+      constituency: 1,
+      party_name: "$party_info.name"
+    }
+  }
+])
+
+===========================================================================================

@@ -1,31 +1,34 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(bodyParser.json());
 
-// MongoDB Connection
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(express.json()); // modern alternative to body-parser
+
+// MongoDB connection
 mongoose.connect("mongodb://localhost:27017/voting_system", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Route Imports
+// Routes
 const voterRoutes = require("./routes/voter");
 const authRoutes = require("./routes/auth");
 const partyRoutes = require("./routes/party");
 const constituencyRoutes = require("./routes/constituency");
+const candidateRoutes = require("./routes/candidateRoutes");
 
-// Route Usage
-app.use("/", authRoutes);  // includes /login
 app.use("/voter", voterRoutes);
+app.use("/auth", authRoutes);
 app.use("/party", partyRoutes);
 app.use("/constituency", constituencyRoutes);
+app.use("/candidates", candidateRoutes);
 
-// Logout
+// Root auth route for login
+app.use("/", authRoutes);
+
 app.post("/logout", (req, res) => {
   res.json({ success: true });
 });

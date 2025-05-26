@@ -1,51 +1,114 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const router = express.Router();
 const Voter = require("../models/Voter");
+const Candidate = require("../models/Candidate");
 
 // Get voter by voter_id
-router.get("/:id", async (req, res) => {
+router.get("/:voter_id", async (req, res) => {
   try {
-    const voter = await Voter.findOne({ voter_id: req.params.id });
+    const voter = await Voter.findOne({ voter_id: req.params.voter_id });
+
+    const Constituency = require("../models/Constituency");
+    if (voter) {
+      const constituency = await Constituency.findOne({ constituency_id: voter.constituency });
+      return res.json({ ...voter.toObject(), constituency });
+    }
+
     if (!voter) return res.status(404).json({ error: "Voter not found" });
     res.json(voter);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Update profile: address, phone, and optionally password
-router.put("/:voter_id", async (req, res) => {
-  const { voter_id } = req.params;
-  const { address, phone, password } = req.body;
+// Get candidates for voter's constituency (ballot)
+router.get("/ballot/:voterId", async (req, res) => {
+    try {
+        const voter = await Voter.findOne({ voter_id: req.params.voterId });
+        if (!voter) return res.status(404).json({ error: "Voter not found." });
 
-  // Validate phone number if provided
-  if (phone && !/^\d{10}$/.test(phone)) {
-    return res.status(400).json({ error: "Phone number must be exactly 10 digits." });
-  }
+        const candidates = await Candidate.aggregate([
+          { $match: { constituency: voter.constituency } },
+          {
+            $lookup: {
+              from: "parties",
+              localField: "party_id",
+              foreignField: "party_id",
+              as: "partyInfo"
+            }
+          },
+          { $unwind: "$partyInfo" },
+          {
+            $project: {
+              candidate_id: 1,
+              name: 1,
+              party_id: 1,
+              constituency: 1,
+              votes: 1,
+              party_name: "$partyInfo.name"
+            }
+          }
+        ]);
+
+        res.json({ voter, candidates });
+    } catch (err) {
+        console.error("Ballot fetch error:", err);
+        res.status(500).json({ error: "Failed to fetch ballot data." });
+    }
+});
+
+
+router.post("/vote", async (req, res) => {
+  const { voter_id, candidate_id } = req.body;
+  console.log("Vote received:", req.body);
 
   try {
-    const updateFields = {};
-    if (address !== undefined) updateFields.address = address;
-    if (phone !== undefined) updateFields.phone = phone;
+    const voter = await Voter.findOne({ voter_id });
+    if (!voter) return res.status(404).json({ error: "Voter not found." });
+    if (voter.has_voted) return res.status(400).json({ error: "You have already voted." });
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      updateFields.password = hashedPassword;
+    if (candidate_id !== "NOTA") {
+      const candidate = await Candidate.findOne({ candidate_id });
+      if (!candidate) return res.status(404).json({ error: "Candidate not found." });
+      if (candidate.constituency !== voter.constituency) {
+        return res.status(400).json({ error: "Invalid constituency." });
+      }
+
+      // Increment candidate votes
+      candidate.votes = (candidate.votes || 0) + 1;
+      await candidate.save();
+    } else {
+      // Handle NOTA votes here (if you track them separately)
+      // Option 1: Keep a separate NOTA counter per constituency
+      // Option 2: Save NOTA as a special candidate entry in Candidate collection
+
+      // Example: increment NOTA votes for the voter's constituency
+      const notaEntry = await Candidate.findOne({ candidate_id: "NOTA", constituency: voter.constituency });
+      if (notaEntry) {
+        notaEntry.votes = (notaEntry.votes || 0) + 1;
+        await notaEntry.save();
+      } else {
+        // If NOTA record doesn't exist, create it
+        await Candidate.create({
+          candidate_id: "NOTA",
+          name: "None of the Above",
+          constituency: voter.constituency,
+          votes: 1,
+          party_id: null
+        });
+      }
     }
 
-    const result = await Voter.updateOne({ voter_id }, { $set: updateFields });
+    voter.has_voted = true;
+    voter.voted_candidate_id = candidate_id;
+    await voter.save();
 
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "Voter not found" });
-    }
-
-    res.json({ message: "Profile updated successfully." });
+    return res.json({ message: "Vote cast successfully!" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update profile." });
+    console.error("Vote error:", err);
+    return res.status(500).json({ error: "Server error while voting." });
   }
 });
+
 
 module.exports = router;

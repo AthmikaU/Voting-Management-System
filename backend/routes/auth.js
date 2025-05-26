@@ -23,26 +23,30 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid Admin credentials" });
     }
 
-    if (role === "voter") {
-      const { voter_id, first_name, last_name, password } = req.body;
+  if (role === "voter") {
+    const { voter_id, password } = req.body;
 
-      const voter = await Voter.findOne({ voter_id, first_name, last_name, password }).populate("constituency");
-      if (voter) {
-        return res.json({
-          success: true,
-          redirect: "/voter_dashboard",
-          voter: {
-            voter_id: voter.voter_id,
-            first_name: voter.first_name,
-            last_name: voter.last_name,
-            address: voter.address,
-            phone: voter.phone,
-            constituency: voter.constituency,
-          }
-        });
-      }
-      return res.status(401).json({ error: "Invalid Voter credentials" });
+    // Find voter by voter_id and password
+    const voter = await Voter.findOne({ voter_id, password });
+    
+    if (voter) {
+      return res.json({
+        success: true,
+        redirect: "/voter_dashboard",
+        voter: {
+          voter_id: voter.voter_id,
+          first_name: voter.first_name,
+          last_name: voter.last_name,
+          address: voter.address,
+          phone: voter.phone,
+          constituency: voter.constituency,
+          has_voted: voter.has_voted,
+          voted_candidate_id: voter.voted_candidate_id,
+        }
+      });
     }
+    return res.status(401).json({ error: "Invalid Voter credentials" });
+  }
 
     if (role === "party") {
       const { party_id, password } = req.body;
