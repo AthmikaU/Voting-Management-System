@@ -19,12 +19,14 @@ const authRoutes = require("./routes/auth");
 const partyRoutes = require("./routes/party");
 const constituencyRoutes = require("./routes/constituency");
 const candidateRoutes = require("./routes/candidateRoutes");
+const adminRoutes = require("./routes/admin");
 
 app.use("/voter", voterRoutes);
 app.use("/auth", authRoutes);
 app.use("/party", partyRoutes);
 app.use("/constituency", constituencyRoutes);
 app.use("/candidates", candidateRoutes);
+app.use("/admin", adminRoutes);
 
 // Root auth route for login
 app.use("/", authRoutes);

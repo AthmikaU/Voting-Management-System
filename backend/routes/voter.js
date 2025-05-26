@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Voter = require("../models/Voter");
 const Candidate = require("../models/Candidate");
+const ElectionStatus = require("../models/ElectionStatus");
 
 // Get voter by voter_id
 router.get("/:voter_id", async (req, res) => {
@@ -74,21 +75,14 @@ router.post("/vote", async (req, res) => {
         return res.status(400).json({ error: "Invalid constituency." });
       }
 
-      // Increment candidate votes
       candidate.votes = (candidate.votes || 0) + 1;
       await candidate.save();
     } else {
-      // Handle NOTA votes here (if you track them separately)
-      // Option 1: Keep a separate NOTA counter per constituency
-      // Option 2: Save NOTA as a special candidate entry in Candidate collection
-
-      // Example: increment NOTA votes for the voter's constituency
       const notaEntry = await Candidate.findOne({ candidate_id: "NOTA", constituency: voter.constituency });
       if (notaEntry) {
         notaEntry.votes = (notaEntry.votes || 0) + 1;
         await notaEntry.save();
       } else {
-        // If NOTA record doesn't exist, create it
         await Candidate.create({
           candidate_id: "NOTA",
           name: "None of the Above",
@@ -102,6 +96,10 @@ router.post("/vote", async (req, res) => {
     voter.has_voted = true;
     voter.voted_candidate_id = candidate_id;
     await voter.save();
+
+    // ✅ Mark election as conducted
+    await ElectionStatus.deleteMany({});
+    await ElectionStatus.create({ conducted: true });
 
     return res.json({ message: "Vote cast successfully!" });
   } catch (err) {

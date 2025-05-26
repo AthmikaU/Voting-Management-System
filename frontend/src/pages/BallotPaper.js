@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Card, Container, Row, Col, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // import useNavigate
 
 const BallotPaper = () => {
   const [candidates, setCandidates] = useState([]);
   const [voter, setVoter] = useState(null);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // initialize navigation
 
   useEffect(() => {
     const stored = localStorage.getItem("voterInfo");
@@ -52,7 +54,13 @@ const BallotPaper = () => {
 
   return (
     <Container className="mt-5">
-      <h2 className="text-center mb-4">Ballot Paper</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Ballot Paper</h2>
+        <Button variant="outline-primary" onClick={() => navigate("/voter_dashboard")}>
+          ← Back to Dashboard
+        </Button>
+      </div>
+
       {message && <Alert variant="info">{message}</Alert>}
 
       <Row>
