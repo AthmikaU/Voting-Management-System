@@ -142,8 +142,9 @@ body {
 
 .button-group .btn:hover {
   background-color: #756a69;
-  color: rgb(103, 9, 9);
+  color: rgb(66, 3, 3);
 }
+
 
 .role-container {
   display: flex;

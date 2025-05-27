@@ -95,7 +95,7 @@ function Login() {
               onChange={handleChange}
             />
 
-            <button type="submit" className="btn btn-primary w-100 mt-3">Login</button>
+            <button type="submit" className="btn btn-primary mr-70 w-20 mt-2 px-3 py-2 text-sm w-50 mx-auto d-block">Login</button>
             {error && <div className="alert alert-danger mt-3">{error}</div>}
           </form>
         </div>
