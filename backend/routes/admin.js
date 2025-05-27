@@ -33,7 +33,7 @@ router.post("/publish-results", async (req, res) => {
     status.resultsPublished = true;
     await status.save();
 
-    // Aggregate results 
+    // Aggregate results with constituency name
     const results = await Candidate.aggregate([
       {
         $group: {
@@ -71,9 +71,21 @@ router.post("/publish-results", async (req, res) => {
       },
       { $unwind: "$partyInfo" },
       {
+        $lookup: {
+          from: "constituencies",
+          localField: "_id",
+          foreignField: "constituency_id",
+          as: "constituencyInfo"
+        }
+      },
+      { $unwind: "$constituencyInfo" },
+      {
         $project: {
           _id: 0,
-          constituency: "$_id",
+          constituency: {
+            id: "$_id",
+            name: "$constituencyInfo.name"
+          },
           winner: {
             candidate_id: "$winners.candidate_id",
             name: "$winners.name",
@@ -96,9 +108,8 @@ router.get("/results", async (req, res) => {
   try {
     const status = await ElectionStatus.findOne();
 
-    // Only return results if resultsPublished is true
     if (!status || !status.resultsPublished) {
-      return res.json([]); // or res.status(403).json({ error: "Results not published yet." });
+      return res.json([]);
     }
 
     const results = await Candidate.aggregate([
@@ -138,9 +149,21 @@ router.get("/results", async (req, res) => {
       },
       { $unwind: "$partyInfo" },
       {
+        $lookup: {
+          from: "constituencies",
+          localField: "_id",
+          foreignField: "constituency_id",
+          as: "constituencyInfo"
+        }
+      },
+      { $unwind: "$constituencyInfo" },
+      {
         $project: {
           _id: 0,
-          constituency: "$_id",
+          constituency: {
+            id: "$_id",
+            name: "$constituencyInfo.name"
+          },
           winner: {
             candidate_id: "$winners.candidate_id",
             name: "$winners.name",

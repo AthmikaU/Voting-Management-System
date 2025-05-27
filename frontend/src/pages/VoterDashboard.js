@@ -23,7 +23,7 @@ function VoterDashboard() {
   return (
     <div className="container mt-4">
       <nav className="navbar navbar-light justify-content-between">
-        <h1 className="navbar-title">Online Voting Management System</h1>
+        <h1 className="navbar-title">Online Voting System</h1>
         <button
           className="btn btn-danger"
           onClick={() => {

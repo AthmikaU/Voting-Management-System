@@ -5,10 +5,7 @@ const mongoose = require("mongoose");
 // Import models
 const Voter = require("../models/Voter"); 
 const Party = require("../models/Party");
-const Constituency = mongoose.models.Constituency || mongoose.model("Constituency", new mongoose.Schema({
-  constituency_id: String,
-  password: String,
-}));
+const Constituency = require("../models/Constituency");
 
 // POST /login
 router.post("/login", async (req, res) => {

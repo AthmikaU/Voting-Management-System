@@ -53,3 +53,59 @@
 .back-button:hover {
   background-color: #2980b9;
 }
+
+.results-container {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e2a38, #243b55);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.results-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.result-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.no-results, .no-election {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: bold;
+  margin: 0;
+}
+
+.back-button {
+  margin-top: 30px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #2980b9;
+}
+
+.constituency-name {
+  font-size: 1.2rem;
+  color: #dc3545; /* Bootstrap's red */
+  margin-bottom: 0.5rem;
+}
