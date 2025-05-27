@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../styles/editProfile.css';
 
 function EditProfile() {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ function EditProfile() {
 
   return (
     <div className="container mt-4">
-      <h2>Edit Your Profile</h2>
+      <h2 className="text-white">Edit Your Profile</h2>
       {message && <div className="alert alert-info">{message}</div>}
 
       <form onSubmit={handleSubmit}>

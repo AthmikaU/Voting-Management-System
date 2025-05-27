@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(express.json()); // modern alternative to body-parser
+app.use(express.json());
 
 // MongoDB connection
 mongoose.connect("mongodb://localhost:27017/voting_system", {

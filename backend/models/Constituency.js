@@ -6,5 +6,4 @@ const ConstituencySchema = new mongoose.Schema({
   password: { type: String, required: true }
 });
 
-// Export the model only if it hasn't been compiled before
 module.exports = mongoose.models.Constituency || mongoose.model("Constituency", ConstituencySchema);

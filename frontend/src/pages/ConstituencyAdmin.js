@@ -7,8 +7,8 @@ function ConstituencyAdmin() {
   const navigate = useNavigate();
   const [candidates, setCandidates] = useState([]);
   const [constituencyId, setConstituencyId] = useState("");
+  const [constituencyName, setConstituencyName] = useState("");
 
-  // Function to fetch candidates by constituencyId
   const fetchCandidates = (id) => {
     axios
       .get(`http://localhost:5000/candidates/${id}`)
@@ -17,6 +17,18 @@ function ConstituencyAdmin() {
       })
       .catch((err) => {
         console.error("Error fetching candidates:", err);
+      });
+  };
+
+  const fetchConstituencyName = (id) => {
+    axios
+      .get(`http://localhost:5000/constituency/${id}`)
+      .then((res) => {
+        console.log("Fetched constituency:", res.data);
+        setConstituencyName(res.data.name);
+      })
+      .catch((err) => {
+        console.error("Error fetching constituency name:", err);
       });
   };
 
@@ -30,6 +42,7 @@ function ConstituencyAdmin() {
     const id = constituencyInfo.constituency_id;
     setConstituencyId(id);
     fetchCandidates(id);
+    fetchConstituencyName(id);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -39,14 +52,12 @@ function ConstituencyAdmin() {
 
   return (
     <div className="container mt-4">
-      <nav className="navbar navbar-light bg-light justify-content-between">
-        <span className="navbar-brand h1">Online Voting Management System</span>
+      <nav className="navbar navbar-light justify-content-between">
+        <h1 className="navbar-title">Online Voting System</h1>
         <button className="btn btn-danger" onClick={handleLogout}>
           Logout
         </button>
       </nav>
-
-      <h1 className="text-center mt-4">Welcome, Constituency Admin!</h1>
 
       <div className="profile-container d-flex mt-4 p-3 bg-white rounded shadow align-items-center">
         <img
@@ -55,14 +66,17 @@ function ConstituencyAdmin() {
           style={{ width: 150, height: 150 }}
         />
         <div className="ms-5">
-          <p><strong>Role:</strong> Constituency Admin</p>
-          <p><strong>Privileges:</strong> Manage voter records, oversee election processes, monitor candidate participation, etc.</p>
+          <h3 className="mb-3">{constituencyName} Admin</h3>
+          <p><strong>Constituency ID:</strong> {constituencyId}</p>
+          <p><strong>Constituency Name:</strong> {constituencyName}</p>
         </div>
       </div>
 
       {/* Candidates Table */}
       <div className="mt-5">
-        <h4>Candidates in {constituencyId}</h4>
+        <h4 className="text-white">
+          Candidates in {constituencyName ? `${constituencyName} (${constituencyId})` : constituencyId}
+        </h4>
         <table className="table table-bordered table-striped mt-3">
           <thead className="table-dark">
             <tr>

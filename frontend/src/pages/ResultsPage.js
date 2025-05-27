@@ -1,6 +1,6 @@
 // src/pages/ResultsPage.js
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // import for back navigation
+import { useNavigate } from "react-router-dom"; // for back navigation
 import axios from "axios";
 import "../styles/results_page.css";
 
@@ -41,16 +41,23 @@ function ResultsPage() {
 
   return (
     <div className="results-container">
-      <h1 className="results-title">Election Results</h1>
+      <h1 className="text-center text-primary my-4 mt-2">Online Voting System</h1>
+      <h2 className="results-title">Election Results</h2>
 
       {!electionConducted ? (
-        <p className="no-election">🚫 No election has been conducted yet.</p>
+        <div className="result-card">
+          <p className="no-election">🚫 No election has been conducted yet.</p>
+        </div>
       ) : results.length === 0 ? (
-        <p className="no-results">Results have not been published yet.</p>
+        <div className="result-card">
+          <p className="no-results">Results have not been published yet.</p>
+        </div>
       ) : (
         results.map(({ constituency, winner }) => (
-          <div className="result-card" key={constituency}>
-            <h3 className="constituency-name">{constituency}</h3>
+          <div className="result-card" key={constituency.id}>
+            <h3 className="constituency-name text-danger">
+              {constituency.id} : {constituency.name}
+            </h3>
             <p className="winner-info">
               Winner: <strong>{winner.name}</strong> (Party: <strong>{winner.party_name}</strong>)<br />
               Votes: <strong>{winner.votes}</strong>

@@ -97,7 +97,7 @@ router.post("/vote", async (req, res) => {
     voter.voted_candidate_id = candidate_id;
     await voter.save();
 
-    // ✅ Mark election as conducted
+    // Mark election as conducted
     await ElectionStatus.deleteMany({});
     await ElectionStatus.create({ conducted: true });
 

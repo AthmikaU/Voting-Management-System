@@ -4,10 +4,7 @@ const Party = require("../models/Party");
 const Candidate = require("../models/Candidate");
 const Constituency = require("../models/Constituency");
 
-/**
- * ✅ GET /party/:id
- * Fetch party details along with all its candidates
- */
+//GET /party/:id => Fetch party details along with all its candidates
 router.get("/:id", async (req, res) => {
   try {
     const party = await Party.findOne({ party_id: req.params.id });
@@ -33,10 +30,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-/**
- * ✅ POST /party/edit-candidates
- * Create or update party details (name/password)
- */
+//POST /party/edit-candidates => Create or update party details (name/password)
 router.post("/edit-candidates", async (req, res) => {
   const { party_id, name, password } = req.body;
 
@@ -64,10 +58,7 @@ router.post("/edit-candidates", async (req, res) => {
   }
 });
 
-/**
- * ✅ POST /party/add-candidate
- * Add a new candidate to a party (only if constituency is valid)
- */
+//POST /party/add-candidate => Add a new candidate to a party (only if constituency is valid)
 router.post("/add-candidate", async (req, res) => {
   const { candidate_id, name, constituency, party_id } = req.body;
 

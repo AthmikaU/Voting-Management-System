@@ -34,17 +34,17 @@ function PartyPage() {
     navigate("/");
   };
 
-  const handleEdit = () => {
-    navigate("/edit-candidates");
-  };
+  // const handleEdit = () => {
+  //   navigate("/edit-candidates");
+  // };
 
   if (loading) return <div>Loading party info...</div>;
   if (!party) return <div>Party not found or error loading data.</div>;
 
   return (
     <div className="container mt-4">
-      <nav className="navbar navbar-light bg-light justify-content-between">
-        <span className="navbar-brand h1">Online Voting Management System</span>
+      <nav className="navbar navbar-light justify-content-between">
+        <h1 className="navbar-title">Online Voting System</h1>
         <button className="btn btn-danger" onClick={handleLogout}>
           Logout
         </button>
@@ -61,15 +61,15 @@ function PartyPage() {
         <div className="ms-5">
           <p><strong>Party ID:</strong> {party.party_id}</p>
           <p><strong>Name:</strong> {party.name}</p>
-          <button className="btn btn-primary mt-2" onClick={handleEdit}>
+          {/* <button className="btn btn-primary mt-2" onClick={handleEdit}>
             Edit Candidates
-          </button>
+          </button> */}
         </div>
       </div>
 
       {/* Candidate Table */}
       <div className="mt-5">
-        <h3 className="mb-3">Candidates from {party.name}</h3>
+        <h3 className="mb-3 text-white">Candidates from {party.name}</h3>
         {party.candidates && party.candidates.length > 0 ? (
           <table className="table table-bordered table-striped">
             <thead className="table-dark">
