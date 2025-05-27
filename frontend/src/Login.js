@@ -130,7 +130,7 @@ function Login() {
                   setFormData({});
                   setError("");
                 }}
-                className="btn btn-secondary mt-2"
+                className="btn btn-secondary mt-2 "
               >
                 Back to User Login
               </button>
