@@ -1,7 +1,7 @@
 // src/pages/AdminPage.js
 import React, { useState } from "react";
 import axios from "axios";
-import "../styles/admin_page.css"; // Import the stylesheet
+import "../styles/admin_page.css"; 
 
 function AdminPage() {
   const [message, setMessage] = useState("");

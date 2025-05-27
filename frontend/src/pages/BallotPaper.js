@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Card, Container, Row, Col, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom"; // import useNavigate
+import { useNavigate } from "react-router-dom"; 
 
 const BallotPaper = () => {
   const [candidates, setCandidates] = useState([]);
