@@ -39,11 +39,13 @@ function Login() {
   return (
     <div className="container">
       <div className="login-card">
-        <h1 className="text-center mb-4">Login</h1>
+        <h1 className="text-center mb-4">VOTING SYSTEM</h1>
+        <h4 className="text-center mb-4">SIGN IN TO CONTINUE</h4>
 
         {/* Role Switcher */}
         {role !== "admin" && (
-          <ul className="nav nav-pills mb-3">
+          <div className="role-container">
+            <ul className="nav nav-pills mb-3">
             {["voter", "party", "constituency"].map(r => (
               <li className="nav-item" key={r}>
                 <button
@@ -59,6 +61,7 @@ function Login() {
               </li>
             ))}
           </ul>
+          </div>
         )}
 
         {/* Login Form */}
@@ -127,7 +130,7 @@ function Login() {
                   setFormData({});
                   setError("");
                 }}
-                className="btn btn-secondary mt-2"
+                className="btn btn-secondary mt-2 "
               >
                 Back to User Login
               </button>

@@ -22,8 +22,8 @@ function VoterDashboard() {
 
   return (
     <div className="container mt-4">
-      <nav className="navbar navbar-light bg-light justify-content-between">
-        <span className="navbar-brand h1">Online Voting Management System</span>
+      <nav className="navbar navbar-light justify-content-between">
+        <h1 className="navbar-title">Online Voting Management System</h1>
         <button
           className="btn btn-danger"
           onClick={() => {
@@ -35,13 +35,13 @@ function VoterDashboard() {
         </button>
       </nav>
 
-      <h1 className="text-center mt-4">Welcome, {voter.first_name} {voter.last_name}!</h1>
+      <h1 className="welcome-title mt-4">Welcome, {voter.first_name} {voter.last_name}!</h1>
 
       <div className="profile-container d-flex mt-4 p-3 bg-white rounded shadow">
         <img
           src="https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/person-circle.svg"
           alt="Profile Icon"
-          style={{ width: 150, height: 150 }}
+          style={{ width: 150, height: 150, marginLeft: 20 }}
         />
         <div className="ms-5">
           <p><strong>Voter ID:</strong> {voter.voter_id}</p>
@@ -64,11 +64,10 @@ function VoterDashboard() {
       </div>
 
 
-      <div className="mt-4">
-        <button
-          className="btn btn-success"
-          onClick={() => navigate("/vote")} 
-        >
+      <div className="center-button mt-4">
+       <button
+            className="btn btn-success"
+           onClick={() => navigate("/vote")}>
           Vote Now
         </button>
       </div>
