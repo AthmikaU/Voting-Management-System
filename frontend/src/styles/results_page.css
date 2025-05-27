@@ -3,14 +3,15 @@
   margin: 2rem auto;
   padding: 1.5rem;
   text-align: center;
+  border-radius: 1rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .results-title {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   font-weight: 600;
-  font-size: 2.8rem;
-  color: #000000;
+  font-size:  2rem;
+  color: #79c57a;
   text-align: center;
   margin-bottom: 1.5rem;
   letter-spacing: 0.05em;
@@ -46,47 +47,25 @@
   font-weight: 500;
 }
 
-.back-button {
-  margin-top: 2rem;
-  padding: 10px 20px;
-  background-color: #093e62;
-  color: white;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.back-button:hover {
-  background-color: #333a3f;
-  color: #000000;
-}
-
 .results-container {
   text-align: center;
   padding: 20px;
-  background: linear-gradient(135deg, #1e2a38, #243b55);
+   background-color: #18203f;
   min-height: 100vh;
   color: #fff;
 }
 
-.results-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #ddd;
-  margin-bottom: 20px;
-}
 
 .result-card {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(32, 185, 96, 0.9);
   color: #333;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   margin: 20px auto;
   max-width: 600px;
-  text-align: left;
+  text-align: center;
+  justify-content: center;
 }
 
 .no-results, .no-election {
@@ -99,7 +78,7 @@
 .back-button {
   margin-top: 30px;
   background-color: #3498db;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 10px 25px;
   border-radius: 8px;
@@ -110,11 +89,12 @@
 }
 
 .back-button:hover {
-  background-color: #2980b9;
+  background-color: #4f5356;
+  color: white;
 }
 
 .constituency-name {
   font-size: 1.2rem;
-  color: #dc3545; /* Bootstrap's red */
+  color: #680202; /* Bootstrap's red */
   margin-bottom: 0.5rem;
 }

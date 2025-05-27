@@ -87,7 +87,7 @@ function Login() {
               <p className="text-muted text-center mb-2">Enter Admin Password</p>
             )}
 
-            <input
+            <input className='admin-password1'
               name="password"
               type="password"
               placeholder="Password"
@@ -123,18 +123,18 @@ function Login() {
               </div>
             </>
           ) : (
-            <div className="text-center">
-              <button
-                onClick={() => {
-                  setRole("voter");
-                  setFormData({});
-                  setError("");
-                }}
-                className="btn btn-secondary mt-2 "
-              >
-                Back to User Login
-              </button>
-            </div>
+            <div className="admin-back-button text-center">
+  <button
+    onClick={() => {
+      setRole("voter");
+      setFormData({});
+      setError("");
+    }}
+    className="btn btn-secondary"
+  >
+    Back to User Login
+  </button>
+</div>
           )}
         </div>
       </div>

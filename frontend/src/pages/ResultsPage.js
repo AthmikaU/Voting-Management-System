@@ -41,8 +41,8 @@ function ResultsPage() {
 
   return (
     <div className="results-container">
-      <h1 className="text-center text-primary my-4 mt-2">Online Voting System</h1>
-      <h2 className="results-title">Election Results</h2>
+      <h1 className="text-center  my-4 mt-2">ONLINE VOTING MANAGEMENT SYSTEM</h1>
+      <h2 className="results-title">ELECTION RESULTS</h2>
 
       {!electionConducted ? (
         <div className="result-card">
@@ -55,7 +55,7 @@ function ResultsPage() {
       ) : (
         results.map(({ constituency, winner }) => (
           <div className="result-card" key={constituency.id}>
-            <h3 className="constituency-name text-danger">
+            <h3 className="constituency-name">
               {constituency.id} : {constituency.name}
             </h3>
             <p className="winner-info">
