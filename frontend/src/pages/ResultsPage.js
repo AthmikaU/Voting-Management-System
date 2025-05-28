@@ -46,7 +46,7 @@ function ResultsPage() {
 
       {!electionConducted ? (
         <div className="result-card">
-          <p className="no-election">🚫 No election has been conducted yet.</p>
+          <p className="no-election text-black">🚫 No election has been conducted yet.</p>
         </div>
       ) : results.length === 0 ? (
         <div className="result-card">
