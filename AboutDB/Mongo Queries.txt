@@ -213,6 +213,36 @@ db.candidates.insertMany([
   }
 ]);
 
+db.candidates.insertMany([
+  {
+    candidate_id: "CD003",
+    name: "Carol Green",
+    constituency: "C001",
+    party_id: "P003",
+    votes: 0
+  },
+  {
+    candidate_id: "CD004",
+    name: "David Lee",
+    constituency: "C002",
+    party_id: "P001",
+    votes: 0
+  },
+  {
+    candidate_id: "CD005",
+    name: "Enola Adams",
+    constituency: "C002",
+    party_id: "P002",
+    votes: 0
+  },
+  {
+    candidate_id: "CD006",
+    name: "Frank Miller",
+    constituency: "C002",
+    party_id: "P003",
+    votes: 0
+  }
+]);
 
 ------------------------------------------------------------------------------
 
@@ -222,6 +252,11 @@ db.constituencies.insertOne({
   password: "const001"
 })
 
+db.constituencies.insertOne({
+  constituency_id: "C002",
+  name: "Mangalore South",
+  password: "const002"
+});
 
 =======================================================================
  1. QUERY: Show all candidates in a constituency with party names

@@ -1,14 +1,51 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-const candidateSchema = new mongoose.Schema({
-  candidate_id: String,
+// const candidateSchema = new mongoose.Schema({
+//   candidate_id: String,
+//   name: String,
+//   constituency: String,
+//   party_id: String,
+//   votes: {
+//     type: Number,
+//     default: 0
+//   }
+// });
+
+// module.exports = mongoose.model("Candidate", candidateSchema);
+
+const mongoose = require("mongoose");
+const Party = require("./Party");
+const Constituency = require("./Constituency");
+
+const CandidateSchema = new mongoose.Schema({
+  candidate_id: { type: String, required: true, unique: true },
   name: String,
-  constituency: String,
-  party_id: String,
+  party_id: {
+    type: String,
+    required: true,
+    validate: {
+      validator: async function (value) {
+        const exists = await Party.exists({ party_id: value });
+        return exists !== null;
+      },
+      message: "Party ID does not exist."
+    }
+  },
+  constituency: {
+    type: String,
+    required: true,
+    validate: {
+      validator: async function (value) {
+        const exists = await Constituency.exists({ constituency_id: value });
+        return exists !== null;
+      },
+      message: "Constituency ID does not exist."
+    }
+  },
   votes: {
     type: Number,
     default: 0
   }
 });
 
-module.exports = mongoose.model("Candidate", candidateSchema);
+module.exports = mongoose.model("Candidate", CandidateSchema);
