@@ -1,3 +1,43 @@
+.result-card {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+  justify-content: center;
+  background-color: rgba(247, 170, 172, 0.9); 
+  color: #333;
+}
+
+/* 🏆 Winner - green */
+.winner-card {
+  background-color: #d4edda;
+  border-left: 6px solid #28a745;
+  color: #155724;
+}
+
+/* 👥 Participant - gray */
+.loser-card {
+  background-color: rgba(243, 172, 175, 0.9) !important;
+  border-left: 6px solid #6c757d;
+  color: #212529;
+}
+
+/* 🚫 No votes - white */
+.no-votes {
+  background-color: #ffffff !important;
+  color: #000000;
+  padding: 15px;
+  margin: 10px auto;
+  border-radius: 12px;
+  border: 2px dashed #999999;
+  text-align: center;
+  font-weight: bold;
+  max-width: 600px;
+}
+
+/* previous */
 .results-container {
   max-width: 700px;
   margin: 2rem auto;

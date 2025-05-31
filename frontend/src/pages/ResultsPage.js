@@ -53,18 +53,39 @@ function ResultsPage() {
           <p className="no-results">Results have not been published yet.</p>
         </div>
       ) : (
-        results.map(({ constituency, winner }) => (
-          <div className="result-card" key={constituency.id}>
-            <h3 className="constituency-name">
-              {constituency.id} : {constituency.name}
-            </h3>
-            <p className="winner-info">
-              Winner: <strong>{winner.name}</strong> (Party: <strong>{winner.party_name}</strong>)<br />
-              Votes: <strong>{winner.votes}</strong>
-            </p>
+        results.map(({ constituency, candidates }) => (
+          <div key={constituency.id}>
+            <h3>{constituency.name}</h3>
+            {candidates.reduce((sum, c) => sum + c.votes, 0) === 0 ? (
+              <div className="result-card no-votes">
+                🛑 No votes cast in this constituency.
+              </div>
+            ) : (
+              candidates.map((c, index) => (
+                <div key={index} className={`result-card ${c.isWinner ? "winner-card" : "loser-card"}`}>
+                  <p>
+                    {c.isWinner ? "🏆 Winner: " : "Participant: "}
+                    <strong>{c.name}</strong> ({c.party_name}) - Votes: {c.votes}
+                  </p>
+                </div>
+              ))
+            )}
           </div>
         ))
-      )}
+
+        // results.map(({ constituency, winner }) => (
+        //   <div className="result-card" key={constituency.id}>
+        //     <h3 className="constituency-name">
+        //       {constituency.id} : {constituency.name}
+        //     </h3>
+        //     <p className="winner-info">
+        //       Winner: <strong>{winner.name}</strong> (Party: <strong>{winner.party_name}</strong>)<br />
+        //       Votes: <strong>{winner.votes}</strong>
+        //     </p>
+        //   </div>
+        // ))
+      )
+      }
 
       <button className="back-button" onClick={handleBack}>← Back</button>
     </div>

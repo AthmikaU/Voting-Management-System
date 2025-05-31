@@ -107,79 +107,172 @@ router.post("/publish-results", async (req, res) => {
 router.get("/results", async (req, res) => {
   try {
     const status = await ElectionStatus.findOne();
-
     if (!status || !status.resultsPublished) {
       return res.json([]);
     }
 
-    const results = await Candidate.aggregate([
+    // Get all constituencies
+    const constituencies = await Candidate.aggregate([
       {
         $group: {
-          _id: "$constituency",
-          maxVotes: { $max: "$votes" }
-        }
-      },
-      {
-        $lookup: {
-          from: "candidates",
-          let: { constituencyId: "$_id", maxVotes: "$maxVotes" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$constituency", "$$constituencyId"] },
-                    { $eq: ["$votes", "$$maxVotes"] }
-                  ]
-                }
-              }
-            }
-          ],
-          as: "winners"
-        }
-      },
-      { $unwind: "$winners" },
-      {
-        $lookup: {
-          from: "parties",
-          localField: "winners.party_id",
-          foreignField: "party_id",
-          as: "partyInfo"
-        }
-      },
-      { $unwind: "$partyInfo" },
-      {
-        $lookup: {
-          from: "constituencies",
-          localField: "_id",
-          foreignField: "constituency_id",
-          as: "constituencyInfo"
-        }
-      },
-      { $unwind: "$constituencyInfo" },
-      {
-        $project: {
-          _id: 0,
-          constituency: {
-            id: "$_id",
-            name: "$constituencyInfo.name"
-          },
-          winner: {
-            candidate_id: "$winners.candidate_id",
-            name: "$winners.name",
-            votes: "$winners.votes",
-            party_name: "$partyInfo.name"
-          }
+          _id: "$constituency"
         }
       }
     ]);
 
+    const results = [];
+
+    for (const item of constituencies) {
+      const constituencyId = item._id;
+
+      // Fetch constituency name
+      const constituencyInfo = await Candidate.aggregate([
+        { $match: { constituency: constituencyId } },
+        {
+          $lookup: {
+            from: "constituencies",
+            localField: "constituency",
+            foreignField: "constituency_id",
+            as: "constituencyData"
+          }
+        },
+        { $unwind: "$constituencyData" },
+        {
+          $project: {
+            name: "$constituencyData.name"
+          }
+        },
+        { $limit: 1 }
+      ]);
+
+      const constituencyName = constituencyInfo[0]?.name || "Unknown";
+
+      // Get all candidates of the constituency with party info
+      const candidates = await Candidate.aggregate([
+        { $match: { constituency: constituencyId } },
+        {
+          $lookup: {
+            from: "parties",
+            localField: "party_id",
+            foreignField: "party_id",
+            as: "party"
+          }
+        },
+        { $unwind: "$party" },
+        {
+          $project: {
+            candidate_id: 1,
+            name: 1,
+            votes: 1,
+            party_name: "$party.name",
+            party_id: "$party.party_id"
+          }
+        }
+      ]);
+
+      // Determine the maximum vote count
+      const maxVotes = Math.max(...candidates.map(c => c.votes));
+
+      // Add isWinner flag to each candidate
+      const candidatesWithFlags = candidates.map(c => ({
+        ...c,
+        isWinner: maxVotes > 0 && c.votes === maxVotes
+      }));
+
+      results.push({
+        constituency: {
+          id: constituencyId,
+          name: constituencyName
+        },
+        candidates: candidatesWithFlags
+      });
+    }
+    
     res.json(results);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch results." });
   }
 });
+
+// GET /admin/results
+// router.get("/results", async (req, res) => {
+//   try {
+//     const status = await ElectionStatus.findOne();
+
+//     if (!status || !status.resultsPublished) {
+//       return res.json([]);
+//     }
+
+//     const results = await Candidate.aggregate([
+//       {
+//         $group: {
+//           _id: "$constituency",
+//           maxVotes: { $max: "$votes" }
+//         }
+//       },
+//       {
+//         $lookup: {
+//           from: "candidates",
+//           let: { constituencyId: "$_id", maxVotes: "$maxVotes" },
+//           pipeline: [
+//             {
+//               $match: {
+//                 $expr: {
+//                   $and: [
+//                     { $eq: ["$constituency", "$$constituencyId"] },
+//                     { $eq: ["$votes", "$$maxVotes"] }
+//                   ]
+//                 }
+//               }
+//             }
+//           ],
+//           as: "winners"
+//         }
+//       },
+//       { $unwind: "$winners" },
+//       {
+//         $lookup: {
+//           from: "parties",
+//           localField: "winners.party_id",
+//           foreignField: "party_id",
+//           as: "partyInfo"
+//         }
+//       },
+//       { $unwind: "$partyInfo" },
+//       {
+//         $lookup: {
+//           from: "constituencies",
+//           localField: "_id",
+//           foreignField: "constituency_id",
+//           as: "constituencyInfo"
+//         }
+//       },
+//       { $unwind: "$constituencyInfo" },
+//       {
+//         $project: {
+//           _id: 0,
+//           constituency: {
+//             id: "$_id",
+//             name: "$constituencyInfo.name"
+//           },
+//           winner: {
+//             candidate_id: "$winners.candidate_id",
+//             name: "$winners.name",
+//             votes: "$winners.votes",
+//             party_name: "$partyInfo.name"
+//           }
+//         }
+//       }
+//     ]);
+
+//     res.json(results);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Failed to fetch results." });
+//   }
+// });
+
 
 // GET /admin/election-status
 router.get("/election-status", async (req, res) => {
