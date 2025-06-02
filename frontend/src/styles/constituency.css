@@ -19,6 +19,14 @@
     text-align: center; /* optional */
 }
 
+.rounded-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
 
 @media (max-width: 768px) {
     .navbar-title {
@@ -40,6 +48,7 @@
 
     .profile-details {
         align-items: center;
+        font-family: 'Times New Roman', Times, serif;
     }
 
     .profile-details p {

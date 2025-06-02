@@ -13,11 +13,12 @@
 }
 
 .modal-box {
-  background-color: white;
+  background-color: rgb(102, 153, 179);
   padding: 2rem;
   border-radius: 10px;
   width: 400px;
   max-width: 90%;
+  font-family: Georgia, serif;
 }
 
 .modal-input {
@@ -49,13 +50,25 @@
   color: white;
 }
 
+.modal-submit-button:hover {
+  background-color: #486f51;
+  color: rgb(255, 255, 255);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .modal-cancel-button {
   background-color: #dc3545;
   color: white;
 }
 
+.modal-cancel-button:hover {
+  background-color: #a0555c;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .modal-error-message {
-  color: red;
+  color: rgb(75, 0, 0);
   margin: 10px 0;
   font-weight: bold;
   text-align: center;

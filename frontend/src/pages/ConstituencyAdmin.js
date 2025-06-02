@@ -77,7 +77,7 @@ function ConstituencyAdmin() {
         <h4 className="text-white">
           Candidates in {constituencyName ? `${constituencyName} (${constituencyId})` : constituencyId}
         </h4>
-        <table className="table table-bordered table-striped mt-3">
+        <table className="table table-bordered table-striped mt-3 rounded-table">
           <thead className="table-dark">
             <tr>
               <th>#</th>

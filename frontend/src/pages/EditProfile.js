@@ -74,96 +74,85 @@ function EditProfile() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-white">Edit Your Profile</h2>
-      {message && <div className="alert alert-info">{message}</div>}
+    <div className="edit-container">
+      <div className="edit-card">
+        <h3 className="text-center mb-3 edit-head">Edit Your Profile</h3>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Voter ID</label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.voter_id}
-            readOnly
-          />
+        {message && <div className="alert alert-info text-center">{message}</div>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Voter ID</label>
+            <input type="text" className="form-control" value={form.voter_id} readOnly />
+          </div>
+
+          <div className="form-group">
+            <label>First Name</label>
+            <input type="text" className="form-control" value={form.first_name} readOnly />
+          </div>
+
+          <div className="form-group">
+            <label>Last Name</label>
+            <input type="text" className="form-control" value={form.last_name} readOnly />
+          </div>
+
+          <div className="form-group">
+            <label>Address</label>
+            <input
+              type="text"
+              className="form-control"
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Phone Number</label>
+            <input
+              type="text"
+              className="form-control"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>New Password (leave blank to keep current)</label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Confirm New Password</label>
+            <input
+              type="password"
+              className="form-control"
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="button-group mt-4">
+            <button type="submit" className="custom-save-button mx-2">
+              Save Changes
+            </button>
+            <button
+              type="button"
+              className="custom-back-button mx-2"
+              onClick={() => navigate(-1)}>
+              Go Back
+           </button>
         </div>
-
-        <div className="form-group">
-          <label>First Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.first_name}
-            readOnly
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Last Name</label>
-          <input
-            type="text"
-            className="form-control"
-            value={form.last_name}
-            readOnly
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Address</label>
-          <input
-            type="text"
-            className="form-control"
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Phone Number</label>
-          <input
-            type="text"
-            className="form-control"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>New Password (leave blank to keep current)</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Confirm New Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary mt-3">
-          Save Changes
-        </button>
-      </form>
-
-      <button
-        className="btn btn-secondary mt-3"
-        onClick={() => navigate(-1)}
-      >
-        Go Back
-      </button>
+        </form>
+      </div>
     </div>
   );
 }
