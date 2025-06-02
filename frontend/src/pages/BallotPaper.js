@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Card, Container, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
+import '../styles/ballotPaper.css';
+
 
 const BallotPaper = () => {
   const [candidates, setCandidates] = useState([]);
@@ -55,7 +57,7 @@ const BallotPaper = () => {
   return (
     <Container className="mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="text-white">Ballot Paper</h2>
+        <h2 className="text-white edit-head">Ballot Paper</h2>
         <Button variant="outline-primary" onClick={() => navigate("/voter_dashboard")}>
           ← Back to Dashboard
         </Button>

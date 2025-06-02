@@ -74,12 +74,12 @@ function ConstituencyAdmin() {
 
       {/* Candidates Table */}
       <div className="mt-5">
-        <h4 className="text-white">
+        <h4 className="text-white sub-head">
           Candidates in {constituencyName ? `${constituencyName} (${constituencyId})` : constituencyId}
         </h4>
         <table className="table table-bordered table-striped mt-3 rounded-table">
           <thead className="table-dark">
-            <tr>
+            <tr className="sub-head">
               <th>#</th>
               <th>Candidate ID</th>
               <th>Candidate Name</th>

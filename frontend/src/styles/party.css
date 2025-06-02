@@ -26,6 +26,9 @@
     text-align: center; /* optional */
 }
 
+.sub-head {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
 
 @media (max-width: 768px) {
     .navbar-title {

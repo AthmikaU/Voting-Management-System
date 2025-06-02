@@ -69,11 +69,11 @@ function PartyPage() {
 
       {/* Candidate Table */}
       <div className="mt-5">
-        <h3 className="mb-3 text-white">Candidates from {party.name}</h3>
+        <h3 className="mb-3 text-white sub-head">Candidates from {party.name}</h3>
         {party.candidates && party.candidates.length > 0 ? (
           <table className="table table-bordered table-striped rounded-table">
             <thead className="table-dark">
-              <tr>
+              <tr className="sub-head">
                 <th>Candidate ID</th>
                 <th>Name</th>
                 <th>Constituency</th>
