@@ -1,39 +1,39 @@
 // src/pages/ResultsPage.js
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // for back navigation
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/results_page.css";
 
 function ResultsPage() {
-    const [results, setResults] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [electionConducted, setElectionConducted] = useState(false);
-    const navigate = useNavigate(); // initialize navigate
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [electionConducted, setElectionConducted] = useState(false);
+  const navigate = useNavigate();
 
-    useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
-        try {
+      try {
         const statusRes = await axios.get("http://localhost:5000/admin/election-status");
         setElectionConducted(statusRes.data.conducted);
         const resultsPublished = statusRes.data.resultsPublished;
 
         if (statusRes.data.conducted && resultsPublished) {
-            const res = await axios.get("http://localhost:5000/admin/results");
-            setResults(res.data);
+          const res = await axios.get("http://localhost:5000/admin/results");
+          setResults(res.data);
         }
-        } catch (err) {
+      } catch (err) {
         setError("⚠️ Failed to fetch results or status.");
-        } finally {
+      } finally {
         setLoading(false);
-        }
+      }
     }
 
     fetchData();
-    }, []);
+  }, []);
 
   const handleBack = () => {
-    navigate(-1); // go back one page
+    navigate(-1);
   };
 
   if (loading) return <div className="results-container"><p>Loading results...</p></div>;
@@ -41,51 +41,63 @@ function ResultsPage() {
 
   return (
     <div className="results-container">
-      <h1 className="text-center  my-4 mt-2">ONLINE VOTING MANAGEMENT SYSTEM</h1>
+      <h1 className="text-center my-4 mt-2">ONLINE VOTING MANAGEMENT SYSTEM</h1>
       <h2 className="results-title">ELECTION RESULTS</h2>
 
       {!electionConducted ? (
-        <div className="result-card">
-          <p className="no-election text-black">🚫 No election has been conducted yet.</p>
-        </div>
+      <div
+        className="result-card"
+        style={{ backgroundColor: "#fff3cd", border: "1px solid #ffeeba", color: "#856404" }}
+      >
+        <p>🚫 No election has been conducted yet.</p>
+      </div>
+
       ) : results.length === 0 ? (
-        <div className="result-card">
+        <div className="result-card" style={{ backgroundColor: "#fff3cd", border: "1px solid #ffeeba", color: "#856404" }}>
           <p className="no-results">Results have not been published yet.</p>
         </div>
       ) : (
-        results.map(({ constituency, candidates }) => (
-          <div key={constituency.id}>
-            <h3>{constituency.name}</h3>
-            {candidates.reduce((sum, c) => sum + c.votes, 0) === 0 ? (
-              <div className="result-card no-votes">
-                🛑 No votes cast in this constituency.
-              </div>
-            ) : (
-              candidates.map((c, index) => (
-                <div key={index} className={`result-card ${c.isWinner ? "winner-card" : "loser-card"}`}>
-                  <p>
-                    {c.isWinner ? "🏆 Winner: " : "Participant: "}
-                    <strong>{c.name}</strong> ({c.party_name}) - Votes: {c.votes}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
-        ))
+        results.map(({ constituency, candidates }) => {
+          const totalVotes = candidates.reduce((sum, c) => sum + c.votes, 0);
+          const winners = candidates.filter(c => c.isWinner && c.votes > 0);
 
-        // results.map(({ constituency, winner }) => (
-        //   <div className="result-card" key={constituency.id}>
-        //     <h3 className="constituency-name">
-        //       {constituency.id} : {constituency.name}
-        //     </h3>
-        //     <p className="winner-info">
-        //       Winner: <strong>{winner.name}</strong> (Party: <strong>{winner.party_name}</strong>)<br />
-        //       Votes: <strong>{winner.votes}</strong>
-        //     </p>
-        //   </div>
-        // ))
-      )
-      }
+          return (
+            <div key={constituency.id}>
+              <h3>{constituency.name}</h3>
+              {totalVotes === 0 ? (
+                <div className="result-card no-votes">
+                  🛑 No votes cast in this constituency.
+                </div>
+              ) : (
+                <>
+                  {winners.length > 1 && (
+                    <div className="draw-info">⚖️ It's a draw between the following candidates:</div>
+                  )}
+                  {candidates.map((c, index) => (
+                  <div
+                    key={index}
+                    className={`result-card ${
+                      c.isWinner
+                        ? (winners.length > 1 ? "draw-card" : "winner-card")
+                        : "loser-card"
+                    }`}
+                  >
+                    <p>
+                      {c.isWinner
+                        ? winners.length > 1
+                          ? "🤝 Draw: "
+                          : "🏆 Winner: "
+                        : "Participant: "}
+                      <strong>{c.name}</strong> ({c.party_name}) - Votes: {c.votes}
+                    </p>
+                  </div>
+                ))}
+                </>
+              )}
+            </div>
+          );
+        })
+      )}
 
       <button className="back-button" onClick={handleBack}>← Back</button>
     </div>

@@ -22,6 +22,27 @@ router.get("/:voter_id", async (req, res) => {
   }
 });
 
+// Update voter by voter_id
+router.put("/:voter_id", async (req, res) => {
+  try {
+    const voter = await Voter.findOne({ voter_id: req.params.voter_id });
+    if (!voter) return res.status(404).json({ error: "Voter not found" });
+
+    const { address, phone, password } = req.body;
+
+    if (address !== undefined) voter.address = address;
+    if (phone !== undefined) voter.phone = phone;
+    if (password !== undefined) voter.password = password;
+
+    await voter.save();
+
+    res.json({ message: "Profile updated successfully!" });
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).json({ error: "Server error while updating profile." });
+  }
+});
+
 // Get candidates for voter's constituency (ballot)
 router.get("/ballot/:voterId", async (req, res) => {
     try {

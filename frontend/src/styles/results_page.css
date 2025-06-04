@@ -1,30 +1,71 @@
+/* GENERAL CONTAINER */
+.results-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem 20px;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #18203f;
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* TITLE */
+.results-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #79c57a;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 5px solid #0971e7;
+  padding-bottom: 0.5rem;
+}
+
+/* CONSTITUENCY NAME */
+.constituency-name {
+  font-size: 1.2rem;
+  color: #680202; /* Bootstrap red */
+  margin-bottom: 0.5rem;
+}
+
+/* CARDS */
 .result-card {
+  width: 100%;
+  max-width: 600px; /* match parent */
+  margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  margin: 20px auto;
-  max-width: 600px;
   text-align: center;
   justify-content: center;
-  background-color: rgba(247, 170, 172, 0.9); 
-  color: #333;
 }
 
-/* 🏆 Winner - green */
+/* ✅ Winner - Green */
 .winner-card {
-  background-color: #d4edda;
-  border-left: 6px solid #28a745;
+  background-color: #d4edda !important;  /* Light green */
+  border-left: 6px solid #28a745;       /* Bootstrap green */
   color: #155724;
 }
 
-/* 👥 Participant - gray */
+/* ⚖️ Draw - Blue */
+.draw-card {
+  background-color: #d0e7ff !important;
+  border-left: 6px solid #007bff;
+  color: #003b7a;
+}
+
+/* 🟥 Loser - Pink */
 .loser-card {
   background-color: rgba(243, 172, 175, 0.9) !important;
   border-left: 6px solid #6c757d;
   color: #212529;
 }
 
-/* 🚫 No votes - white */
+
+/* 🛑 No Votes */
 .no-votes {
   background-color: #ffffff !important;
   color: #000000;
@@ -37,88 +78,29 @@
   max-width: 600px;
 }
 
-/* previous */
-.results-container {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  text-align: center;
-  border-radius: 1rem;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.results-title {
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: 600;
-  font-size:  2rem;
-  color: #79c57a;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-bottom: 5px solid #0971e7;
-  padding-bottom: 0.5rem;
-}
-
-
-.result-card {
-  border: none;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background: #06bb36;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
-}
-
-.constituency-name {
-  font-size: 1.25rem;
-  color: #000000;
-  margin-bottom: 0.5rem;
-}
-
-.winner-info {
-  font-size: 1.2rem;
-  color: #052b13;
-}
-
-.no-election, .no-results, .error {
-  color: #000000;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.results-container {
-  text-align: center;
-  padding: 20px;
-   background-color: #18203f;
-  min-height: 100vh;
-  color: #fff;
-}
-
-
-.result-card {
-  background-color: rgba(32, 185, 96, 0.9);
-  color: #333;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  margin: 20px auto;
-  max-width: 600px;
-  text-align: center;
-  justify-content: center;
-}
-
-.no-results, .no-election {
+/* 🟠 Messages */
+.no-election,
+.no-results,
+.error {
   font-size: 18px;
   color: #e74c3c;
   font-weight: bold;
   margin: 0;
 }
 
+/* ⚖️ Draw Indicator */
+.draw-info {
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* BACK BUTTON */
 .back-button {
   margin-top: 30px;
   background-color: #3498db;
-  color: rgb(0, 0, 0);
+  color: black;
   border: none;
   padding: 10px 25px;
   border-radius: 8px;
@@ -133,8 +115,9 @@
   color: white;
 }
 
-.constituency-name {
-  font-size: 1.2rem;
-  color: #680202; /* Bootstrap's red */
-  margin-bottom: 0.5rem;
+.result-card.no-election {
+  background-color: #fff3cd; /* Light yellow background */
+  color: #856404;            /* Dark amber text for readability */
+  border: 1px solid #ffeeba;
+  font-weight: 500;
 }
