@@ -1,18 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const candidateSchema = new mongoose.Schema({
-//   candidate_id: String,
-//   name: String,
-//   constituency: String,
-//   party_id: String,
-//   votes: {
-//     type: Number,
-//     default: 0
-//   }
-// });
-
-// module.exports = mongoose.model("Candidate", candidateSchema);
-
 const mongoose = require("mongoose");
 const Party = require("./Party");
 const Constituency = require("./Constituency");
@@ -22,9 +7,12 @@ const CandidateSchema = new mongoose.Schema({
   name: String,
   party_id: {
     type: String,
-    required: true,
+    required: function () {
+      return this.candidate_id !== "NOTA";
+    },
     validate: {
       validator: async function (value) {
+        if (this.candidate_id === "NOTA") return true; // skip validation for NOTA
         const exists = await Party.exists({ party_id: value });
         return exists !== null;
       },
