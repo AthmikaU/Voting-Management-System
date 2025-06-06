@@ -13,11 +13,12 @@
 }
 
 .modal-box {
-  background-color: rgb(102, 153, 179);
+  background-color: rgb(99, 139, 159);
   padding: 2rem;
   border-radius: 10px;
   width: 400px;
   max-width: 90%;
+  color: rgb(2, 18, 52);
   font-family: Georgia, serif;
 }
 
