@@ -34,13 +34,13 @@ The Voting Management System is a full-stack web application that allows registe
 1. **Clone the Repository**:
 
 ```bash
-git clone https://github.com/evitabarboza/voting-management-system.git
+git clone https://github.com/evitabarboza/Voting-Management-System.git
 ```
 
 2. **Backend Setup**:
 
 ```bash
-cd voting-management-system/backend
+cd Voting-Management-System/backend
 npm install
 ```
 
@@ -80,7 +80,7 @@ npm start
 ## Project Structure
 
 ```
-voting-management-system/
+Voting-Management-System/
 │
 ├── backend/                  # NodeJS backend
 │   ├── models/               # Mongoose schemas
