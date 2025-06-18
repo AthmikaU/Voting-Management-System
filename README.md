@@ -34,7 +34,7 @@ The Voting Management System is a full-stack web application that allows registe
 1. **Clone the Repository**:
 
 ```bash
-git clone https://github.com/evitabarboza/Voting-Management-System.git
+git clone https://github.com/AthmikaU/Voting-Management-System.git
 ```
 
 2. **Backend Setup**:
@@ -102,10 +102,6 @@ Voting-Management-System/
 
 If you have any suggestions or improvements, feel free to submit a pull request or open an issue on the GitHub repository.
 
-## License
-
-This project is open-source and available under the MIT License.
-
 ## Contact
 
-For any inquiries, please contact me at [evitabarboza195@gmail.com](mailto:evitabarboza195@gmail.com)
+For any inquiries, please contact me at [athmikaubhat@gmail.com](mailto:athmikaubhat@gmail.com)
