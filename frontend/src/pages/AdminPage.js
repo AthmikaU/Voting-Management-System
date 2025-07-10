@@ -4,6 +4,9 @@ import axios from "axios";
 import Modal from "../components/Modal"; 
 import "../styles/admin_page.css";
 
+// ✅ API base set using env var if present, else default to localhost
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 function AdminPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,7 +18,8 @@ function AdminPage() {
     setLoading(true);
     setMessage("");
     try {
-      await axios.post("http://localhost:5000/admin/reset-votes");
+      // await axios.post("http://localhost:5000/admin/reset-votes");
+      await axios.post(`${API_BASE}/admin/reset-votes`);
       setMessage("✅ All votes have been reset successfully.");
     } catch (err) {
       setMessage("❌ Failed to reset votes.");
@@ -28,7 +32,8 @@ function AdminPage() {
     setLoading(true);
     setMessage("");
     try {
-      await axios.post("http://localhost:5000/admin/publish-results");
+      // await axios.post("http://localhost:5000/admin/publish-results");
+      await axios.post(`${API_BASE}/admin/publish-results`);
       setMessage("✅ Results published successfully. Redirecting...");
       setTimeout(() => {
         window.location.href = "/results";
@@ -89,7 +94,8 @@ function AdminPage() {
     setMessage("");
     setModalError("");
     try {
-      await axios.post(`http://localhost:5000/admin/${endpoints[modalType]}`, formData);
+      // await axios.post(`http://localhost:5000/admin/${endpoints[modalType]}`, formData);
+      await axios.post(`${API_BASE}/admin/${endpoints[modalType]}`, formData);
       setMessage(`✅ ${modalType.charAt(0).toUpperCase() + modalType.slice(1)} added successfully.`);
       handleModalClose();
     } catch (err) {

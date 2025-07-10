@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/constituency.css";
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 function ConstituencyAdmin() {
   const navigate = useNavigate();
   const [candidates, setCandidates] = useState([]);
@@ -10,8 +12,8 @@ function ConstituencyAdmin() {
   const [constituencyName, setConstituencyName] = useState("");
 
   const fetchCandidates = (id) => {
-    axios
-      .get(`http://localhost:5000/candidates/${id}`)
+    // axios.get(`http://localhost:5000/candidates/${id}`)
+    axios.get(`${API_BASE}/candidates/${id}`)
       .then((res) => {
         setCandidates(res.data);
       })
@@ -21,8 +23,8 @@ function ConstituencyAdmin() {
   };
 
   const fetchConstituencyName = (id) => {
-    axios
-      .get(`http://localhost:5000/constituency/${id}`)
+    // axios.get(`http://localhost:5000/constituency/${id}`)
+    axios.get(`${API_BASE}/constituency/${id}`)
       .then((res) => {
         console.log("Fetched constituency:", res.data);
         setConstituencyName(res.data.name);
@@ -72,7 +74,6 @@ function ConstituencyAdmin() {
         </div>
       </div>
 
-      {/* Candidates Table */}
       <div className="mt-5">
         <h4 className="text-white sub-head">
           Candidates in {constituencyName ? `${constituencyName} (${constituencyId})` : constituencyId}

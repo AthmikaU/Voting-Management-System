@@ -40,21 +40,29 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config(); // Load .env file
+require("dotenv").config(); 
 
 const app = express();
 
-// Use dynamic CORS for development or deployment
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:3000",
-  credentials: true
+  credentials: true,
 }));
 
 app.use(express.json());
 
-// MongoDB connection using Atlas URI from .env
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected successfully"))
+// Determine MongoDB URI (local or cloud)
+const mongoUri = process.env.NODE_ENV === "production"
+  ? process.env.MONGODB_URI
+  : process.env.LOCAL_MONGO_URI;
+
+// Connect to MongoDB
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log(`MongoDB connected (${mongoUri.includes("localhost") ? "Local" : "Atlas"})`))
   .catch(err => console.error("MongoDB connection failed:", err));
 
 // Routes
@@ -72,10 +80,10 @@ app.use("/constituency", constituencyRoutes);
 app.use("/candidates", candidateRoutes);
 app.use("/admin", adminRoutes);
 
-// Root auth route for login
+// Root auth route
 app.use("/", authRoutes);
 
-// Logout route
+// Logout
 app.post("/logout", (req, res) => {
   res.json({ success: true });
 });

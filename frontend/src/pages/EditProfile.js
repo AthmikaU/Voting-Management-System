@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../styles/editProfile.css';
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
+
 function EditProfile() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -21,8 +23,8 @@ function EditProfile() {
     const stored = localStorage.getItem("voterInfo");
     if (stored) {
       const { voter_id } = JSON.parse(stored);
-      axios
-        .get(`http://localhost:5000/voter/${voter_id}`)
+      // axios.get(`http://localhost:5000/voter/${voter_id}`)
+      axios.get(`${API_BASE}/voter/${voter_id}`) 
         .then((res) => {
           const voter = res.data;
           setForm((prev) => ({
@@ -66,7 +68,8 @@ function EditProfile() {
     }
 
     try {
-      await axios.put(`http://localhost:5000/voter/${form.voter_id}`, updateData);
+      // await axios.put(`http://localhost:5000/voter/${form.voter_id}`, updateData);
+      await axios.put(`${API_BASE}/voter/${form.voter_id}`, updateData);
       setMessage("Profile updated successfully!");
     } catch (err) {
       setMessage("Error updating profile.");
@@ -149,8 +152,8 @@ function EditProfile() {
               className="custom-back-button mx-2"
               onClick={() => navigate(-1)}>
               Go Back
-           </button>
-        </div>
+            </button>
+          </div>
         </form>
       </div>
     </div>

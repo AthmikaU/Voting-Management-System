@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './styles/login.css';
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
+
 function Login() {
   const [role, setRole] = useState("voter");
   const [formData, setFormData] = useState({});
@@ -16,7 +18,8 @@ function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/login", { ...formData, role });
+      // const res = await axios.post("http://localhost:5000/login", { ...formData, role });
+      const res = await axios.post(`${API_BASE}/login`, { ...formData, role }); 
 
       if (res.data.success) {
         if (role === "voter" && res.data.voter) {
@@ -46,21 +49,21 @@ function Login() {
         {role !== "admin" && (
           <div className="role-container">
             <ul className="nav nav-pills mb-3">
-            {["voter", "party", "constituency"].map(r => (
-              <li className="nav-item" key={r}>
-                <button
-                  className={`nav-link ${role === r ? "active" : ""}`}
-                  onClick={() => {
-                    setRole(r);
-                    setFormData({});
-                    setError("");
-                  }}
-                >
-                  {r.charAt(0).toUpperCase() + r.slice(1)}
-                </button>
-              </li>
-            ))}
-          </ul>
+              {["voter", "party", "constituency"].map(r => (
+                <li className="nav-item" key={r}>
+                  <button
+                    className={`nav-link ${role === r ? "active" : ""}`}
+                    onClick={() => {
+                      setRole(r);
+                      setFormData({});
+                      setError("");
+                    }}
+                  >
+                    {r.charAt(0).toUpperCase() + r.slice(1)}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
@@ -87,7 +90,8 @@ function Login() {
               <p className="text-muted text-center mb-2">Enter Admin Password</p>
             )}
 
-            <input className='admin-password1'
+            <input
+              className='admin-password1'
               name="password"
               type="password"
               placeholder="Password"
@@ -95,7 +99,13 @@ function Login() {
               onChange={handleChange}
             />
 
-            <button type="submit" className="btn btn-primary mr-70 w-20 mt-2 px-3 py-2 text-sm w-50 mx-auto d-block">Login</button>
+            <button
+              type="submit"
+              className="btn btn-primary mr-70 w-20 mt-2 px-3 py-2 text-sm w-50 mx-auto d-block"
+            >
+              Login
+            </button>
+
             {error && <div className="alert alert-danger mt-3">{error}</div>}
           </form>
         </div>
@@ -124,17 +134,17 @@ function Login() {
             </>
           ) : (
             <div className="admin-back-button text-center">
-  <button
-    onClick={() => {
-      setRole("voter");
-      setFormData({});
-      setError("");
-    }}
-    className="btn btn-secondary"
-  >
-    Back to User Login
-  </button>
-</div>
+              <button
+                onClick={() => {
+                  setRole("voter");
+                  setFormData({});
+                  setError("");
+                }}
+                className="btn btn-secondary"
+              >
+                Back to User Login
+              </button>
+            </div>
           )}
         </div>
       </div>

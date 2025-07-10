@@ -4,6 +4,7 @@ import { Button, Card, Container, Row, Col, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
 import '../styles/ballotPaper.css';
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
 
 const BallotPaper = () => {
   const [candidates, setCandidates] = useState([]);
@@ -18,7 +19,8 @@ const BallotPaper = () => {
 
       const fetchBallotData = async () => {
         try {
-          const res = await axios.get(`http://localhost:5000/voter/ballot/${voter_id}`);
+          // const res = await axios.get(`http://localhost:5000/voter/ballot/${voter_id}`);
+          const res = await axios.get(`${API_BASE}/voter/ballot/${voter_id}`); 
           setCandidates(res.data.candidates);
           setVoter(res.data.voter);
         } catch (err) {
@@ -38,7 +40,8 @@ const BallotPaper = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/voter/vote", {
+      // const res = await axios.post("http://localhost:5000/voter/vote", {
+      const res = await axios.post(`${API_BASE}/voter/vote`, { 
         voter_id: voter.voter_id,
         candidate_id,
       });

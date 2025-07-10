@@ -1,7 +1,10 @@
+// src/pages/VoterDashboard.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../styles/voter_dashboard.css';
+
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 function VoterDashboard() {
   const [voter, setVoter] = useState(null);
@@ -12,7 +15,8 @@ function VoterDashboard() {
     if (stored) {
       const { voter_id } = JSON.parse(stored);
 
-      axios.get(`http://localhost:5000/voter/${voter_id}`)
+      // axios.get(`http://localhost:5000/voter/${voter_id}`)
+      axios.get(`${API_BASE}/voter/${voter_id}`)
         .then(res => setVoter(res.data))
         .catch(() => setVoter(null));
     }
@@ -63,11 +67,10 @@ function VoterDashboard() {
         </div>
       </div>
 
-
       <div className="center-button mt-4">
-       <button
-            className="btn btn-success"
-           onClick={() => navigate("/vote")}>
+        <button
+          className="btn btn-success"
+          onClick={() => navigate("/vote")}>
           Vote Now
         </button>
       </div>

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import '../styles/party.css';
 
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
+
 function PartyPage() {
   const [party, setParty] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,8 +15,8 @@ function PartyPage() {
     if (stored) {
       const { party_id } = JSON.parse(stored);
 
-      axios
-        .get(`http://localhost:5000/party/${party_id}`)
+      // axios.get(`http://localhost:5000/party/${party_id}`)
+      axios.get(`${API_BASE}/party/${party_id}`)
         .then((res) => {
           setParty(res.data);
           setLoading(false);
